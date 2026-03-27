@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Assessment Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; color: var(--text-primary); }
+        .admin-table th, .admin-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--card-border); }
+        .admin-table th { background: rgba(255,255,255,0.05); color: var(--primary); font-weight: 600; }
+        .admin-table tr:hover { background: rgba(255,255,255,0.02); }
+        .add-form-container { margin: 40px auto; max-width: 900px; padding: 30px; }
+        .btn-delete { color: #f43f5e; font-weight: 600; background: none; border: none; cursor: pointer; }
+        .btn-delete:hover { text-decoration: underline; }
+        input, select, textarea { width: 100%; padding: 10px; background: rgba(15,23,42,0.5); border: 1px solid var(--card-border); border-radius: 8px; color: white; margin-bottom: 10px; }
+    </style>
+</head>
+<body style="padding: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <h1 style="font-size: 2rem; font-weight: 800;">Question Management Dashboard</h1>
+        <div style="display: flex; gap: 15px;">
+            <button class="btn-primary" style="background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);" onclick="window.location.href='/'">Candidate View</button>
+            <button class="btn-primary" style="background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2);" onclick="window.location.href='/admin/logout'">Secure Logout</button>
+        </div>
+    </div>
+
+    <!-- Add Question Form -->
+    <div class="add-form-container glass-card">
+        <h3 style="margin-bottom: 20px; color: var(--primary);">Add New Assessment Question</h3>
+        <form action="/admin/add" method="POST">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label>Select Course</label>
+                    <select name="course" required>
+                        <option value="Python">Python Development</option>
+                        <option value="MySQL">MySQL Administration</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Cyber Security">Cyber Security</option>
+                        <option value="Full Stack Development">Full Stack Development</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Difficulty Level</label>
+                    <select name="level" required>
+                        <option value="Level 1">Level 1 (Foundational)</option>
+                        <option value="Level 2">Level 2 (Advanced)</option>
+                    </select>
+                </div>
+            </div>
+
+            <label>Question Text</label>
+            <textarea name="question_text" rows="3" required placeholder="e.g. What is the output of..."></textarea>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <input name="o1" placeholder="Option 1" required>
+                <input name="o2" placeholder="Option 2" required>
+                <input name="o3" placeholder="Option 3" required>
+                <input name="o4" placeholder="Option 4" required>
+            </div>
+            
+            <label>Correct Answer (Exact Value from Options)</label>
+            <input name="correct_answer" placeholder="e.g. List" required>
+            
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">Save Question to Database</button>
+        </form>
+    </div>
+
+    <!-- Question List -->
+    <div class="glass-card" style="padding: 30px;">
+        <h3 style="margin-bottom: 20px;">Existing Questions (Total: {{ questions|length }})</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Level</th>
+                    <th>Question</th>
+                    <th>Correct Answer</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for q in questions %}
+                <tr>
+                    <td style="font-size: 0.85rem;">{{ q.course }}</td>
+                    <td><span class="badge-small">{{ q.level }}</span></td>
+                    <td style="max-width: 400px; font-size: 0.9rem;">{{ q.question_text }}</td>
+                    <td style="color: var(--accent);">{{ q.correct_answer }}</td>
+                    <td>
+                        <a href="/admin/delete/{{ q.id }}" class="btn-delete" onclick="return confirm('Really delete this question?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

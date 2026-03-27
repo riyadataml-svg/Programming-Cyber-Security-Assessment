@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Portal | Programming & Cyber Security</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        .form-input { width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 8px; color: white; font-size: 1rem; box-sizing: border-box; }
+        .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <!-- Admin Access Shortcut -->
+        <div style="position: absolute; top: 30px; right: 40px;">
+            <a href="/admin" class="btn-primary" style="background: rgba(255,255,255,0.05); color: var(--text-muted); text-decoration: none; border: 1px solid var(--card-border); padding: 8px 16px; font-size: 0.8rem;">
+                Admin Dashboard
+            </a>
+        </div>
+
+        <div class="header-content" style="text-align: center; margin-bottom: 40px;">
+            <p style="color: var(--primary); font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Professional Certification</p>
+            <h1 style="font-size: 3rem; margin-top: 10px; margin-bottom: 20px; font-weight: 800;">Programming & Cyber Security Assessment</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Select a technical assessment track below to begin your certification journey. High-performance, time-boxed assessments for modern tech roles.</p>
+        </div>
+
+        <div class="course-grid">
+            <!-- Python Card -->
+            <div class="course-card glass-card" onclick="selectCourse('Python')">
+                <div>
+                    <div class="course-icon">🐍</div>
+                    <h3>Python Development</h3>
+                    <p>Core syntax, logic, decorators, and advanced functional programming concepts.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-small">10 Questions</span>
+                    <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Start Track</button>
+                </div>
+            </div>
+
+            <!-- MySQL Card -->
+            <div class="course-card glass-card" onclick="selectCourse('MySQL')">
+                <div>
+                    <div class="course-icon">🗄️</div>
+                    <h3>MySQL Administration</h3>
+                    <p>Relational databases, complex joins, ACID properties, and normalization levels.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-small">10 Questions</span>
+                    <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Start Track</button>
+                </div>
+            </div>
+
+            <!-- Data Science Card -->
+            <div class="course-card glass-card" onclick="selectCourse('Data Science')">
+                <div>
+                    <div class="course-icon">📊</div>
+                    <h3>Data Science & Analytics</h3>
+                    <p>Pandas, NumPy, data cleaning, statistical dispersion, and machine learning models.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-small">10 Questions</span>
+                    <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Start Track</button>
+                </div>
+            </div>
+
+            <!-- Cyber Security Card -->
+            <div class="course-card glass-card" onclick="selectCourse('Cyber Security')">
+                <div>
+                    <div class="course-icon">🛡️</div>
+                    <h3>Cyber Security Essentials</h3>
+                    <p>Ethical hacking, SQLi, 2FA, encryption models, and network traffic security.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-small">10 Questions</span>
+                    <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Start Track</button>
+                </div>
+            </div>
+
+            <!-- Full Stack Card -->
+            <div class="course-card glass-card" onclick="selectCourse('Full Stack Development')">
+                <div>
+                    <div class="course-icon">🌐</div>
+                    <h3>Full Stack Development</h3>
+                    <p>Modern frontend components, RESTful APIs, CORS, and full-cycle development.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge-small">10 Questions</span>
+                    <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem;">Start Track</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions & Login Modal -->
+    <div class="modal-overlay" id="startModal">
+        <div class="modal-content glass-card">
+            <h3 style="font-size: 1.5rem; margin-bottom: 20px;" id="modalTitle">Course Induction</h3>
+            
+            <form action="/login" method="POST" id="startForm">
+                <input type="hidden" name="course" id="selectedCourseField">
+                
+                <div class="form-group">
+                    <label for="name">Candidate Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="e.g. John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Candidate Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="e.g. john@example.com" required>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+                    <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">
+                        🎯 <b>Format:</b> 10 Multi-level Questions<br>
+                        ⏳ <b>Time limit:</b> 10 Minutes Total<br>
+                        💾 <b>Session:</b> Auto-saved progress
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">Acknowledge & Start</button>
+                    <button type="button" class="btn-primary" style="flex: 1; background: rgba(255,255,255,0.1);" onclick="hideModal()">Change Track</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function selectCourse(courseName) {
+            document.getElementById('selectedCourseField').value = courseName;
+            document.getElementById('modalTitle').innerText = courseName + " Induction";
+            document.getElementById('startModal').style.display = 'flex';
+        }
+
+        function hideModal() {
+            document.getElementById('startModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

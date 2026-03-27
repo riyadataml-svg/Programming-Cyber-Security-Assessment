@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Result | Certification Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="background: radial-gradient(circle at top, rgba(99, 102, 241, 0.15) 0%, var(--bg-dark) 80%);">
+    <div class="result-container glass-card">
+        <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 30px;">Assessment Report</h1>
+        
+        <div style="display: flex; gap: 40px; margin: 40px 0; justify-content: center;">
+            <div style="text-align: left;">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">STUDENT NAME</p>
+                <p style="font-size: 1.2rem; font-weight: 600; margin-top: 5px;">{{ result.name }}</p>
+            </div>
+            <div style="text-align: left;">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">ASSESSMENT TRACK</p>
+                <p style="font-size: 1.2rem; font-weight: 600; margin-top: 5px;">{{ result.course }}</p>
+            </div>
+        </div>
+
+        <div class="score-circle">
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Score</p>
+            <h2>{{ result.percentage|round(1) }}%</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">{{ result.score }}/10 Correct</p>
+        </div>
+
+        <div style="margin: 40px 0;">
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Overall Performance Grade</p>
+            <span class="grade-badge grade-{{ result.grade|lower }}">
+                GRADE {{ result.grade }}
+            </span>
+        </div>
+
+        <p style="color: var(--text-muted); line-height: 1.6; max-width: 500px; margin: 20px auto;">
+            {% if result.grade == 'A' %}
+                Congratulations! You have demonstrated exceptional knowledge in {{ result.course }}.
+            {% elif result.grade == 'B' or result.grade == 'C' %}
+                Good job! You have a solid understanding of the fundamentals, though there's room for further refinement.
+            {% else %}
+                Don't be discouraged! Revisit the course material and attempt the certification again soon.
+            {% endif %}
+        </p>
+
+        <div style="margin-top: 60px; border-top: 1px solid var(--card-border); padding-top: 40px;">
+            <button class="btn-primary" onclick="window.location.href='/'">Return to Portal</button>
+            <button class="btn-primary" style="background: rgba(255,255,255,0.05); margin-left:15px; border: 1px solid var(--card-border);" onclick="window.print()">Download Report</button>
+        </div>
+    </div>
+
+    <!-- Certification ID Simulation -->
+    <p style="text-align: center; color: rgba(255,255,255,0.2); font-size: 0.7rem; margin-top: 40px;">
+        CERTIFICATION ID: CERT-{{ result.name[:3]|upper }}-{{ range(1000, 9999)|random }}
+    </p>
+</body>
+</html>
